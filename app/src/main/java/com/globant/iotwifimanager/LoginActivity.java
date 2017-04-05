@@ -31,39 +31,58 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
     private static final String SSID_FILTER = "KudosButton";
 
     // UI references.
-    private AutoCompleteTextView mSSIDView;
+    private EditText mSSIDView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
     private RecyclerView mListView;
     private WiFiController mController;
 
+    private Button btnConnect;
+
+    private OnClickListener connectAction = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String selected = ((APInfoAdapter)mListView.getAdapter()).getSelectedItem().getSSID();
+            mController.connectToAP(selected, mPasswordView.getText().toString());
+
+            mListView.setAdapter(new APInfoAdapter(mController.list(""), LoginActivity.this));
+            mListView.invalidate();
+            btnConnect.setOnClickListener(disconnectAction);
+            btnConnect.setText("DISCONNECT");
+        }
+    };
+
+    private OnClickListener disconnectAction = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            mController.disconnect();
+
+            mListView.setAdapter(new APInfoAdapter(mController.list(""), LoginActivity.this));
+            mListView.invalidate();
+            btnConnect.setOnClickListener(connectAction);
+            btnConnect.setText("CONNECT");
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mSSIDView = (AutoCompleteTextView) findViewById(R.id.tvSelectedSSID);
+        mSSIDView = (EditText) findViewById(R.id.tvSelectedSSID);
 
         mPasswordView = (EditText) findViewById(R.id.password);
 
-        Button btnConnect = (Button) findViewById(R.id.sign_in_button);
-        btnConnect.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String selected = ((APInfoAdapter)mListView.getAdapter()).getSelectedItem().getSSID();
-                mController.connectToAP(selected, mPasswordView.getText().toString());
-
-                mListView.setAdapter(new APInfoAdapter(mController.list(""), LoginActivity.this));
-                mListView.invalidate();
-            }
-        });
+        btnConnect = (Button) findViewById(R.id.sign_in_button);
+        btnConnect.setOnClickListener(connectAction);
 
         Button btnRefresh = (Button) findViewById(R.id.refresh_button);
+        final String filter = mSSIDView.getText().toString();
         btnRefresh.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListView.setAdapter(new APInfoAdapter(mController.list(mSSIDView.getText().toString()), LoginActivity.this));
+                mListView.setAdapter(new APInfoAdapter(mController.list(filter), LoginActivity.this));
                 mListView.invalidate();
             }
         });

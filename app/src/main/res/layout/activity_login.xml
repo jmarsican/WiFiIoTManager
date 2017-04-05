@@ -31,10 +31,11 @@
                 android:id="@+id/ssidparent"
                 android:layout_alignParentTop="true">
 
-                <AutoCompleteTextView
+                <EditText
                     android:id="@+id/tvSelectedSSID"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="none"
                     android:hint="@string/prompt_email"
                     android:maxLines="1" />
 
@@ -65,14 +66,14 @@
                 android:layout_width="match_parent"
                 android:layout_below="@id/loginparent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvAccessPoints"
                 android:scrollbars="vertical"
-                android:layout_below="@id/sign_in_button"
+                android:layout_below="@+id/send_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -80,9 +81,9 @@
                 android:id="@+id/send_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
-                android:layout_above="@+id/refresh_button"
+                android:layout_below="@+id/sign_in_button"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="SEND"
                 android:textStyle="bold" />
 
@@ -92,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="REFRESH"
                 android:textStyle="bold" />
 

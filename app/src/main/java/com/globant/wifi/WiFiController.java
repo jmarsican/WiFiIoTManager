@@ -78,6 +78,10 @@ public class WiFiController {
 
     }
 
+    public void disconnect() {
+        wifiManager.disconnect();
+    }
+
     public int connectToAP(String networkSSID, String networkPasskey) {
         for (ScanResult result : wifiManager.getScanResults()) {
 
