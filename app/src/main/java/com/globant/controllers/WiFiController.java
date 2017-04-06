@@ -1,4 +1,4 @@
-package com.globant.wifi;
+package com.globant.controllers;
 
 import android.content.Context;
 import android.net.wifi.ScanResult;

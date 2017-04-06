@@ -6,32 +6,32 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_below="@id/ssidparent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         android:id="@+id/ip_parent"
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/etIp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
         android:hint="IP Address"/>
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_below="@id/ssidparent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
         android:id="@+id/filter_parent"
         android:layout_height="wrap_content">
     <EditText
         android:id="@+id/etFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="4dp"
         android:hint="Filter"/>
     </android.support.design.widget.TextInputLayout>
 

@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.globant.wifi.WiFiController;
+import com.globant.controllers.WiFiController;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
             DialogFragment configDialog = new ConfigDialog();
             configDialog.show(getSupportFragmentManager(), "config_dialog");
             return true;
-        } else if (item.getItemId() == R.id.config_ip) {
+        } else if (item.getItemId() == R.id.about_item) {
             return true;
         }
         return super.onOptionsItemSelected(item);
