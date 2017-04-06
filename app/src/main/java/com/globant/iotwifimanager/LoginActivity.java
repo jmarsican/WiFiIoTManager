@@ -6,11 +6,15 @@ import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -99,6 +103,26 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
         mProgressView = findViewById(R.id.login_progress);
 
         initList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater= getMenuInflater();
+        inflater.inflate(R.menu.menu_config, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.config_item) {
+            DialogFragment configDialog = new ConfigDialog();
+            configDialog.show(getSupportFragmentManager(), "config_dialog");
+            return true;
+        } else if (item.getItemId() == R.id.config_ip) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initList() {
