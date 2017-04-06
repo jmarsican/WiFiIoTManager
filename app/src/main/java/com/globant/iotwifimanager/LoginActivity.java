@@ -234,8 +234,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
             showProgress(false);
 
             if (!success) {
-                mSSIDView.setError("Network error");
-                mPasswordView.requestFocus();
+                Toast.makeText(LoginActivity.this,"Network error",Toast.LENGTH_SHORT).show();
             }
         }
 
