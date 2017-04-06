@@ -37,7 +37,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     android:enabled="false"
-                    android:focusable="false"
                     android:hint="@string/prompt_email"
                     android:maxLines="1" />
 

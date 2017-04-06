@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.globant.wifi.WiFiController;
 
@@ -90,10 +91,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
         send.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                showProgress(true);
-                UserLoginTask mAuthTask = new UserLoginTask("", "");
-                mAuthTask.execute((Void) null);
-
+                sendData();
             }
         });
 
@@ -113,56 +111,27 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
     }
 
 
-    private void attemptLogin() {
-
+    private void sendData() {
         // Reset errors.
         mSSIDView.setError(null);
-        mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mSSIDView.getText().toString();
+        String ssid = mSSIDView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mSSIDView.setError(getString(R.string.error_field_required));
-            focusView = mSSIDView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mSSIDView.setError(getString(R.string.error_invalid_email));
-            focusView = mSSIDView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
+        if (TextUtils.isEmpty(ssid)) {
+            Toast.makeText(this,"Please select an access point",Toast.LENGTH_SHORT).show();
+        } else if (!mController.isConnected()) {
+            Toast.makeText(this,"Couldn't connect to AP, please try again",Toast.LENGTH_SHORT).show();
+            btnConnect.setText("CONNECT");
+            btnConnect.setOnClickListener(connectAction);
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            UserLoginTask mAuthTask = new UserLoginTask(ssid, password);
+            mAuthTask.execute((Void) null);
+
             showProgress(true);
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
     /**
@@ -170,9 +139,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -210,20 +177,19 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mUrl;
+        private final String mSSID;
         private final String mPassword;
 
-        UserLoginTask(String url, String password) {
-            mUrl = url;
+        UserLoginTask(String ssid, String password) {
+            mSSID = ssid;
             mPassword = password;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            URL url = null;
             try {
-                url = new URL(ENDPOINT[0]+String.format(ENDPOINT[1],"SSID","PWD"));
+                URL url = new URL(ENDPOINT[0]+String.format(ENDPOINT[1], mSSID, mPassword));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
                 urlConnection.getResponseCode();
@@ -232,7 +198,6 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
                 return false;
             }
 
-
             return true;
         }
 
@@ -240,10 +205,8 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
         protected void onPostExecute(final Boolean success) {
             showProgress(false);
 
-            if (success) {
-//                finish();
-            } else {
-                mPasswordView.setError("Network error");
+            if (!success) {
+                mSSIDView.setError("Network error");
                 mPasswordView.requestFocus();
             }
         }

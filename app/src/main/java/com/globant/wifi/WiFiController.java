@@ -3,6 +3,7 @@ package com.globant.wifi;
 import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
@@ -12,14 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by javier on 03/04/17.
+ * Created by javier marsicano on 03/04/17.
  */
 
 public class WiFiController {
     private static final String TAG = WiFiController.class.toString();
 
     private WifiManager wifiManager;
-    private String connectedSsidName;
 
 
     public WiFiController(Context context) {
@@ -98,15 +98,7 @@ public class WiFiController {
                 Log.d(TAG, "# enableNetwork returned " + b);
 
                 wifiManager.setWifiEnabled(true);
-
-                boolean changeHappen = wifiManager.saveConfiguration();
-
-                if (res != -1 && changeHappen) {
-                    Log.d(TAG, "# Change happen");
-                    connectedSsidName = networkSSID;
-                } else {
-                    Log.d(TAG, "# Change NOT happen");
-                }
+                wifiManager.saveConfiguration();
 
                 return res;
             }
@@ -129,7 +121,11 @@ public class WiFiController {
         return "OPEN";
     }
 
-    public String getConnectedSsidName() {
-        return connectedSsidName;
+    public boolean isConnected() {
+        WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+
+        return (!connectionInfo.getSSID().equals("<unknown ssid>") &&
+                connectionInfo.getIpAddress() != 0);
+
     }
 }
