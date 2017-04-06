@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
 
 
     private static final String[] ENDPOINT = new String[]{
-            "http://192.168.4.1", "/wifisave?s=%s&p=%s"
+            "http://%s/wifisave?s=%s&p=%s"
     };
     private static final String SSID_FILTER = "KudosButton";
 
@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
             btnConnect.setText("CONNECT");
             btnConnect.setOnClickListener(connectAction);
         } else {
-            UserLoginTask mAuthTask = new UserLoginTask(ssid, password);
+            UserLoginTask mAuthTask = new UserLoginTask(mPreferences.getIpAddress(), ssid, password);
             mAuthTask.execute((Void) null);
 
             showProgress(true);
@@ -205,8 +205,10 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
 
         private final String mSSID;
         private final String mPassword;
+        private final String mIpAddress;
 
-        UserLoginTask(String ssid, String password) {
+        UserLoginTask(String ipAddress, String ssid, String password) {
+            mIpAddress = ipAddress;
             mSSID = ssid;
             mPassword = password;
         }
@@ -215,7 +217,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
         protected Boolean doInBackground(Void... params) {
 
             try {
-                URL url = new URL(ENDPOINT[0]+String.format(ENDPOINT[1], mSSID, mPassword));
+                URL url = new URL(String.format(ENDPOINT[0], mIpAddress, mSSID, mPassword));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.connect();
                 urlConnection.getResponseCode();

@@ -20,7 +20,7 @@ public class WiFiController {
     private static final String TAG = WiFiController.class.toString();
 
     private WifiManager wifiManager;
-
+//http://stackoverflow.com/questions/34288416/android-6-0-bug-have-permission-but-getscanresults-still-return-empty-list-i
 
     public WiFiController(Context context) {
         wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
@@ -75,7 +75,6 @@ public class WiFiController {
         }
 
         return wifiConfiguration;
-
     }
 
     public void disconnect() {
@@ -126,6 +125,5 @@ public class WiFiController {
 
         return (!connectionInfo.getSSID().equals("<unknown ssid>") &&
                 connectionInfo.getIpAddress() != 0);
-
     }
 }
