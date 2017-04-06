@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.globant.controllers.PreferencesController;
 import com.globant.controllers.WiFiController;
 
 import java.net.HttpURLConnection;
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
     private View mLoginFormView;
     private RecyclerView mListView;
     private WiFiController mController;
+    private PreferencesController mPreferences;
 
     private Button btnConnect;
 
@@ -74,6 +76,9 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mController = new WiFiController(getApplicationContext());
+        mPreferences = new PreferencesController(getApplicationContext());
+
         mSSIDView = (EditText) findViewById(R.id.tvSelectedSSID);
 
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -82,11 +87,10 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
         btnConnect.setOnClickListener(connectAction);
 
         Button btnRefresh = (Button) findViewById(R.id.refresh_button);
-        final String filter = mSSIDView.getText().toString();
         btnRefresh.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListView.setAdapter(new APInfoAdapter(mController.list(filter), LoginActivity.this));
+                mListView.setAdapter(new APInfoAdapter(mController.list(mPreferences.getFilter()), LoginActivity.this));
                 mListView.invalidate();
             }
         });
@@ -126,11 +130,9 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
     }
 
     private void initList() {
-        mController = new WiFiController(getApplicationContext());
-
         mListView = (RecyclerView) findViewById(R.id.rvAccessPoints);
         mListView.setLayoutManager(new LinearLayoutManager(this));
-        mListView.setAdapter(new APInfoAdapter(mController.list(SSID_FILTER), this));
+        mListView.setAdapter(new APInfoAdapter(mController.list(mPreferences.getFilter()), this));
         mListView.setItemAnimator(new DefaultItemAnimator());
     }
 
