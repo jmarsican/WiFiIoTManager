@@ -1,39 +1,25 @@
 package com.globant.iotwifimanager;
 
-import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.globant.controllers.PreferencesController;
 import com.globant.controllers.WiFiController;
+import com.globant.fragments.ConnectFragment;
 import com.globant.fragments.KuddosButtonSearch;
 import com.globant.model.APInfo;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements APInfoAdapter.AdapterCallback {
+    private WiFiController mController;
+    private PreferencesController mPreferences;
+
+    String mSelectedSsid;
 
     private static final String SSID_FILTER = "KudosButton";
 
@@ -41,6 +27,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mController = new WiFiController(getApplicationContext());
+        mPreferences = new PreferencesController(getApplicationContext());
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new KuddosButtonSearch()).commit();
     }
@@ -63,6 +52,25 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void goToNextScreen(){
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ConnectFragment()).commit();
+    }
+
+    public List<APInfo> getScanResults() {
+        return mController.list("");
+    }
+
+    public void connect(String password){
+        mController.connectToAP(mSelectedSsid, password);
+    }
+
+    @Override
+    public void onClick(APInfo selected) {
+        mSelectedSsid = selected.getSSID();
+
+        //TODO next fragment connection flow
     }
 }
 

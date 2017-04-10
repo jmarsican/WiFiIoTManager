@@ -10,50 +10,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ssidparent"
-            android:layout_alignParentTop="true">
-
-            <EditText
-                android:id="@+id/tvSelectedSSID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:enabled="false"
-                android:hint="@string/prompt_email"
-                android:maxLines="1" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_below="@id/ssidparent"
-            android:id="@+id/loginparent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"/>
-
-        </android.support.design.widget.TextInputLayout>
-
         <Button
-            android:id="@+id/sign_in_button"
+            android:id="@+id/refresh_button"
             style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
-            android:layout_below="@id/loginparent"
+            android:layout_alignParentTop="true"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/action_sign_in"
+            android:layout_marginTop="5dp"
+            android:text="REFRESH"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/send_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/refresh_button"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="SEND"
             android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
@@ -62,26 +36,6 @@
             android:layout_below="@+id/send_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-        <Button
-            android:id="@+id/send_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/sign_in_button"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="SEND"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/refresh_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="REFRESH"
-            android:textStyle="bold" />
 
     </RelativeLayout>
 

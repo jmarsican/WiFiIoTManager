@@ -39,7 +39,7 @@ public class APInfoAdapter extends RecyclerView.Adapter<APInfoAdapter.MyViewHold
             @Override
             public void onClick(View view) {
                 selectedPos = position;
-                mCallback.onClick();
+                mCallback.onClick(mList.get(position));
             }
         });
         holder.tvDesription.setText(mList.get(position).getDescription());
@@ -66,6 +66,6 @@ public class APInfoAdapter extends RecyclerView.Adapter<APInfoAdapter.MyViewHold
     }
 
     public interface AdapterCallback {
-        void onClick();
+        void onClick(APInfo selected);
     }
 }
