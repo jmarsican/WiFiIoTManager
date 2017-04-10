@@ -1,8 +1,10 @@
 package com.globant.iotwifimanager;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,9 +25,12 @@ import android.widget.Toast;
 
 import com.globant.controllers.PreferencesController;
 import com.globant.controllers.WiFiController;
+import com.globant.model.APInfo;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements APInfoAdapter.AdapterCallback {
 
@@ -43,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
     private RecyclerView mListView;
     private WiFiController mController;
     private PreferencesController mPreferences;
+    private final int PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 0x123456;
 
     private Button btnConnect;
 
@@ -130,9 +136,19 @@ public class LoginActivity extends AppCompatActivity implements APInfoAdapter.Ad
     }
 
     private void initList() {
+        List<APInfo> list = new ArrayList<>();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION);
+            list = new ArrayList<>();
+        }else {
+            list = mController.list(mPreferences.getFilter());
+        }
         mListView = (RecyclerView) findViewById(R.id.rvAccessPoints);
         mListView.setLayoutManager(new LinearLayoutManager(this));
-        mListView.setAdapter(new APInfoAdapter(mController.list(mPreferences.getFilter()), this));
+        mListView.setAdapter(new APInfoAdapter(list, this));
         mListView.setItemAnimator(new DefaultItemAnimator());
     }
 
