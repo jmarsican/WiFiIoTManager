@@ -65,7 +65,7 @@ public class APInfoAdapter extends RecyclerView.Adapter<APInfoAdapter.MyViewHold
         }
     }
 
-    interface AdapterCallback {
+    public interface AdapterCallback {
         void onClick();
     }
 }
